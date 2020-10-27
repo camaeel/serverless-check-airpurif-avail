@@ -27,9 +27,7 @@ def cloud_watch_schedule_event():
 def test_lambda_handler(cloud_watch_schedule_event):
 
     ret = app.lambda_handler(cloud_watch_schedule_event, "")
-    data = json.loads(ret["body"])
 
     assert ret["statusCode"] == 200
-    assert "message" in ret["body"]
-    assert data["message"] == "hello world"
+    assert ret["body"] == "Ok"
     # assert "location" in data.dict_keys()
