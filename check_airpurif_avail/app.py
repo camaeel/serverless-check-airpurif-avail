@@ -24,6 +24,9 @@ def lambda_handler(event, context):
     avail_data = avail_api.json()
     logger.debug("Pages loaded")
 
+    data_script_tag_content = page1_data.find(id='__nuxt').next_sibling.contents[0]
+    device_data = data_script_tag_content[data_script_tag_content.index('=')+1:]
+    json.load(device_data)
     # try:
     #     ip = requests.get("http://checkip.amazonaws.com/")
     # except requests.RequestException as e:
