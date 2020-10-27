@@ -10,19 +10,23 @@ Description: >
 Parameters: 
   NotificationEmail:
     Type: String
-
+  PurifierModelName:
+    Type: String
 Resources:
-  CheckAirPurifAvailabilityFunction:
+  CheckPurifAvailFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       CodeUri: check_airpurif_avail/
       Handler: app.lambda_handler
       Runtime: python3.8
       Events:
-        CheckWebsiteScheduledEvent:
+        CheckPurifAvailScheduledEvent:
           Type: Schedule
           Properties:
             Schedule: rate(1 hour)
+            Name: CheckPurifAvailSchedule
+            Enabled: False
+
   # AlarmTopic:
   #   Type: AWS::SNS::Topic
   #   Properties:
@@ -55,7 +59,7 @@ Outputs:
   #   Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
   CheckAirPurifAvailabilityFunction:
     Description: "Hello World Lambda Function ARN"
-    Value: !GetAtt CheckAirPurifAvailabilityFunction.Arn
+    Value: !GetAtt CheckPurifAvailFunction.Arn
   CheckAirPurifAvailabilityFunctionRole:
     Description: "Implicit IAM Role created for Hello World function"
-    Value: !GetAtt CheckAirPurifAvailabilityFunctionRole.Arn
+    Value: !GetAtt CheckPurifAvailFunctionRole.Arn
