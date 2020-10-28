@@ -10,8 +10,13 @@
         "logicalId": "CheckPurifAvailFunction"
       },
       "lambda": {
-        "payload": {},
-        "environmentVariables": {}
+        "payload": {
+          "path": "events/event.json"
+        },
+        "environmentVariables": {
+          "NOTIFICATION_EMAIL": "test@test.pl",
+          "PURIFIER_MODEL_NAME": "AC3059"
+        }
       }
     }
   ]

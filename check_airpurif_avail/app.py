@@ -28,13 +28,8 @@ def lambda_handler(event, context):
     page1_data = parse_json_data_from_html(page1_content)
     models_data = page1_data['state']['questions']['modelsInfo']
     
-    # try:
-    #     ip = requests.get("http://checkip.amazonaws.com/")
-    # except requests.RequestException as e:
-    #     # Send some context about this error to Lambda Logs
-    #     print(e)
-
-    #     raise e
+    skus = get_skus(models_data, os.environ['PURIFIER_MODEL_NAME'])
+    availability = check_skus_avilability(skus, availability_data)
 
     return {
         "statusCode": 200,
@@ -51,3 +46,17 @@ def parse_json_data_from_html(content):
     fixed_quotes = re.sub(r':(![0-9]|null)([,}])',r':"\1"\2',fixed_quotes)
     
     return json.loads(fixed_quotes)
+
+def get_skus(models_data, model_name):
+    return [m['sku'] for m in models_data if m['name'] == model_name]
+
+
+def check_skus_avilability(skus, availability_data):
+    available = []
+    for sku in skus:
+        for i in range(len(availability_data['material'])):
+            if availability_data['material'][i] == sku and availability_data['unrestr'][i] > 0:
+                available.append(sku)
+                
+
+    return available
