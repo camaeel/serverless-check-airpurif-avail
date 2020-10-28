@@ -29,11 +29,19 @@ def lambda_handler(event, context):
     models_data = page1_data['state']['questions']['modelsInfo']
     
     skus = get_skus(models_data, os.environ['PURIFIER_MODEL_NAME'])
-    availability = check_skus_avilability(skus, availability_data)
+    availabile_skus = check_skus_avilability(skus, availability_data)
+
+    available_models = [ s[1] for s in availabile_skus ]
+
+    if len(available_models) > 0:
+        resp = "Avialble models: %s" % ", ".join(available_models)
+    else:
+        resp = "Models not available"
+
 
     return {
         "statusCode": 200,
-        "body": "Ok"
+        "body": resp
     }
 
 def parse_json_data_from_html(content):
@@ -48,14 +56,14 @@ def parse_json_data_from_html(content):
     return json.loads(fixed_quotes)
 
 def get_skus(models_data, model_name):
-    return [m['sku'] for m in models_data if m['name'] == model_name]
+    return [(m['sku'],m['name']) for m in models_data if m['name'] == model_name]
 
 
 def check_skus_avilability(skus, availability_data):
     available = []
     for sku in skus:
         for i in range(len(availability_data['material'])):
-            if availability_data['material'][i] == sku and availability_data['unrestr'][i] > 0:
+            if availability_data['material'][i] == sku[0] and availability_data['unrestr'][i] > 0:
                 available.append(sku)
                 
 

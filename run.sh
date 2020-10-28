@@ -7,4 +7,4 @@ fi
 
 set -ex
 
-sam local invoke --event events/event.json --parameter-overrides "NotificationEmail=\"$EMAIL\" PurifierModelName=\"AC3059\""
+sam local invoke --event events/event.json --parameter-overrides "NotificationEmail=\"$EMAIL\" PurifierModelName=\"AC1217\""
