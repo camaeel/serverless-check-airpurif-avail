@@ -2,4 +2,4 @@
 
 set -ex
 
-sam  deploy --tags costSource=check-airpurif-avail
+sam  deploy

@@ -1,7 +1,8 @@
 import json
 import logging
 import requests
-
+import re
+import os
 from bs4 import BeautifulSoup
 
 #setup logging
@@ -14,19 +15,19 @@ def lambda_handler(event, context):
     URL_PAGE1 = "https://usunsmog.pl/wypozycz-oczyszczacz/"
     URL_AVAILABILITY = "https://usunsmog.pl/api-stock/?api"
 
-    # logger.debug("Env: %s", str(os.environ))
-    logger.debug("Event: %s", str(event))
+    logger.debug("NOTIFICATION_EMAIL: %s", str(os.environ['NOTIFICATION_EMAIL']))
+    logger.debug("PURIFIER_MODEL_NAME: %s", str(os.environ['PURIFIER_MODEL_NAME']))
+    logger.debug("Event received: %s", str(event))
 
     page1 = requests.get(URL_PAGE1)
     avail_api = requests.get(URL_AVAILABILITY)
 
-    page1_data = BeautifulSoup(page1.content, 'html.parser') 
-    avail_data = avail_api.json()
+    page1_content = BeautifulSoup(page1.content, 'html.parser') 
+    availability_data = avail_api.json()
     logger.debug("Pages loaded")
-
-    data_script_tag_content = page1_data.find(id='__nuxt').next_sibling.contents[0]
-    device_data = data_script_tag_content[data_script_tag_content.index('=')+1:]
-    json.load(device_data)
+    page1_data = parse_json_data_from_html(page1_content)
+    models_data = page1_data['state']['questions']['modelsInfo']
+    
     # try:
     #     ip = requests.get("http://checkip.amazonaws.com/")
     # except requests.RequestException as e:
@@ -39,3 +40,14 @@ def lambda_handler(event, context):
         "statusCode": 200,
         "body": "Ok"
     }
+
+def parse_json_data_from_html(content):
+    #extract script element with data
+    data_script_tag_content = content.find(id='__nuxt').next_sibling.contents[0]
+    device_data = data_script_tag_content[data_script_tag_content.index('=')+1:]
+
+    #do the regexp substition magic
+    fixed_quotes = re.sub(r'([{,])([a-zA-Z0-9_]+):',r'\1"\2":',device_data)
+    fixed_quotes = re.sub(r':(![0-9]|null)([,}])',r':"\1"\2',fixed_quotes)
+    
+    return json.loads(fixed_quotes)

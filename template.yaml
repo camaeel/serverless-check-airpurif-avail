@@ -26,6 +26,10 @@ Resources:
             Schedule: rate(1 hour)
             Name: CheckPurifAvailSchedule
             Enabled: False
+      Environment: 
+        Variables:
+          NOTIFICATION_EMAIL: !Ref NotificationEmail
+          PURIFIER_MODEL_NAME: !Ref PurifierModelName
 
   # AlarmTopic:
   #   Type: AWS::SNS::Topic
