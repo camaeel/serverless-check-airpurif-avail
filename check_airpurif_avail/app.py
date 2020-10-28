@@ -41,6 +41,8 @@ def lambda_handler(event, context):
         resp = "Models not available"
         # aws_sns.publish(TopicArn=os.environ['NOTIFICATION_TOPIC'], Message=resp, Subject='Check air purifier avilability')
 
+    logger.info(resp)
+
     return {
         "statusCode": 200,
         "body": resp
