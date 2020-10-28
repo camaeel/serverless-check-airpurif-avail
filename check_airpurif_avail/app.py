@@ -4,12 +4,13 @@ import requests
 import re
 import os
 from bs4 import BeautifulSoup
+import boto3
 
 #setup logging
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
-
+aws_sns = boto3.client('sns')
 
 def lambda_handler(event, context):
     URL_PAGE1 = "https://usunsmog.pl/wypozycz-oczyszczacz/"
@@ -35,9 +36,10 @@ def lambda_handler(event, context):
 
     if len(available_models) > 0:
         resp = "Avialble models: %s" % ", ".join(available_models)
+        aws_sns.publish(TopicArn=os.environ['NOTIFICATION_TOPIC'], Message=resp, Subject='Check air purifier avilability')
     else:
         resp = "Models not available"
-
+        # aws_sns.publish(TopicArn=os.environ['NOTIFICATION_TOPIC'], Message=resp, Subject='Check air purifier avilability')
 
     return {
         "statusCode": 200,

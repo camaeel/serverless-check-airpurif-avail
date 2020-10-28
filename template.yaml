@@ -23,11 +23,18 @@ Resources:
           Properties:
             Schedule: rate(1 hour)
             Name: CheckPurifAvailSchedule
-            Enabled: False
+            Enabled: True
       Environment: 
         Variables:
           NOTIFICATION_TOPIC: !ImportValue airpurifier-avilable-topic-TopicARN
           PURIFIER_MODEL_NAME: !Ref PurifierModelName
+      Policies:
+      - Statement:
+          Effect: Allow
+          Action:
+          - sns:Publish
+          Resource: !ImportValue airpurifier-avilable-topic-TopicARN
+
 
   # AlarmTopic:
   #   Type: AWS::SNS::Topic
