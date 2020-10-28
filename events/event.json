@@ -3,11 +3,11 @@
   "id": "123123-123",
   "detail-type": "Scheduled Event",
   "source": "aws.events",
-  "account": "433854569226",
+  "account": "132123",
   "time": "2020-10-27T22:05:19Z",
   "region": "eu-west-1",
   "resources": [
-    "arn:aws:events:eu-west-1:433854569226:rule/CheckPurifAvailSchedule"
+    "arn:aws:events:eu-west-1:132123:rule/CheckPurifAvailSchedule"
   ],
   "detail": {}
 }

@@ -8,5 +8,5 @@ s3_prefix = "check-airpurif-avail"
 region = "eu-west-1"
 confirm_changeset = true
 capabilities = "CAPABILITY_IAM"
-parameter_overrides = "NotificationEmail=\"\" PurifierModelName=\"AC3059\""
+parameter_overrides = "PurifierModelName=\"AC3059\""
 tags = "project=\"serverless-check-airpurifier-availability\""

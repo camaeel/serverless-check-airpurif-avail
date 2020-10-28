@@ -14,7 +14,7 @@
           "path": "events/event.json"
         },
         "environmentVariables": {
-          "NOTIFICATION_EMAIL": "test@test.pl",
+          "NOTIFICATION_TOPIC": "arn:aws:sns:eu-west-1:zzzz:airpurifier-avilable-topic",
           "PURIFIER_MODEL_NAME": "AC3059"
         }
       }

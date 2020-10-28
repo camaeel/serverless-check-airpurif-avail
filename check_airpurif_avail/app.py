@@ -15,7 +15,7 @@ def lambda_handler(event, context):
     URL_PAGE1 = "https://usunsmog.pl/wypozycz-oczyszczacz/"
     URL_AVAILABILITY = "https://usunsmog.pl/api-stock/?api"
 
-    logger.debug("NOTIFICATION_EMAIL: %s", str(os.environ['NOTIFICATION_EMAIL']))
+    logger.debug("NOTIFICATION_TOPIC: %s", str(os.environ['NOTIFICATION_TOPIC']))
     logger.debug("PURIFIER_MODEL_NAME: %s", str(os.environ['PURIFIER_MODEL_NAME']))
     logger.debug("Event received: %s", str(event))
 

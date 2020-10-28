@@ -8,8 +8,6 @@ Description: >
 #   Function:
 #     Timeout: 3
 Parameters: 
-  NotificationEmail:
-    Type: String
   PurifierModelName:
     Type: String
 Resources:
@@ -28,7 +26,7 @@ Resources:
             Enabled: False
       Environment: 
         Variables:
-          NOTIFICATION_EMAIL: !Ref NotificationEmail
+          NOTIFICATION_TOPIC: !ImportValue airpurifier-avilable-topic-TopicARN
           PURIFIER_MODEL_NAME: !Ref PurifierModelName
 
   # AlarmTopic:

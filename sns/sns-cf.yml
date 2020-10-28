@@ -1,0 +1,24 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'AWS CloudFormation Template creating SNS for sending notifications'
+Parameters:
+  SNSTopicName:
+    Default: airpurifier-avilable-topic
+    Type: String
+  AirPurifierAvailableNotificationEmail:
+    Type: String
+    Default: test@test.pl
+Resources:
+  AirPurifierAvailableNotificationTopic:
+    Type: AWS::SNS::Topic
+    Properties: 
+      Subscription: 
+      - Endpoint: !Ref AirPurifierAvailableNotificationEmail
+        Protocol: "email"
+      TopicName: !Ref SNSTopicName
+
+Outputs:
+  AirPurifierAvailableNotificationTopicARN:
+    Description: SNS Topic ARN
+    Value: !Ref AirPurifierAvailableNotificationTopic
+    Export:
+      Name: !Sub "${AWS::StackName}-TopicARN"    
